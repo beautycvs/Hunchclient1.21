@@ -1,0 +1,4 @@
+{
+  "vertex": "hunchclient:fullscreen",
+  "fragment": "hunchclient:mask_flat"
+}

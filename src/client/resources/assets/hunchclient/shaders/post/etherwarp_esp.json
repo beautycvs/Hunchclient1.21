@@ -1,0 +1,49 @@
+{
+  "targets": [
+    "swap",
+    "blur_h",
+    "blur_v"
+  ],
+  "passes": [
+    {
+      "name": "etherwarp_glow_h",
+      "intarget": "minecraft:main",
+      "outtarget": "blur_h",
+      "uniforms": [
+        {
+          "name": "Radius",
+          "values": [ 6.0 ]
+        }
+      ]
+    },
+    {
+      "name": "etherwarp_glow_v",
+      "intarget": "blur_h",
+      "outtarget": "blur_v",
+      "uniforms": [
+        {
+          "name": "Radius",
+          "values": [ 6.0 ]
+        }
+      ]
+    },
+    {
+      "name": "etherwarp_composite",
+      "intarget": "blur_v",
+      "outtarget": "minecraft:main",
+      "auxtargets": [
+        {
+          "name": "MainSampler",
+          "id": "minecraft:main"
+        }
+      ],
+      "uniforms": [
+        {
+          "name": "GlowIntensity",
+          "values": [ 1.5 ]
+        }
+      ]
+    }
+  ]
+}
+

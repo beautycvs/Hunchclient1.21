@@ -1,0 +1,18 @@
+{
+  "title_music": {
+    "sounds": [
+      {
+        "name": "hunchclient:title_music",
+        "stream": true
+      }
+    ]
+  },
+  "limbo_sound": {
+    "sounds": [
+      {
+        "name": "hunchclient:limbo_sound",
+        "stream": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "passes": [
+    {
+      "name": "darkmode",
+      "intarget": "minecraft:main",
+      "outtarget": "minecraft:main"
+    }
+  ]
+}

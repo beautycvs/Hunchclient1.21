@@ -1,0 +1,12 @@
+{
+  "vertex": "hunchclient:fullscreen",
+  "fragment": "hunchclient:composite_add",
+  "samplers": [
+    { "name": "SceneSampler" },
+    { "name": "GlowSampler" }
+  ],
+  "uniforms": [
+    { "name": "GlowColor", "type": "float", "count": 3, "values": [0.4, 0.8, 1.0] },
+    { "name": "GlowStrength", "type": "float", "count": 1, "values": [1.5] }
+  ]
+}

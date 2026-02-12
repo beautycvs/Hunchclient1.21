@@ -1,0 +1,12 @@
+{
+  "vertex": "hunchclient:fullscreen",
+  "fragment": "hunchclient:etherwarp_composite",
+  "samplers": [
+    { "name": "MainSampler" },
+    { "name": "BlurSampler" }
+  ],
+  "uniforms": [
+    { "name": "GlowIntensity", "type": "float", "count": 1, "values": [1.5] }
+  ]
+}
+

@@ -1,0 +1,12 @@
+{
+  "key.category.hunchclient.main": "HunchClient",
+  "key.hunchclient.open_gui": "Open GUI",
+  "key.hunchclient.terminal_debug": "Dump Terminal Debug",
+  "key.hunchclient.playertrap": "Player Trap",
+  "key.hunchclient.save_replay": "Save Replay",
+  "key.hunchclient.chestaura": "Chest Aura",
+  "key.hunchclient.bossblockminer": "Dungeon Breaker",
+  "key.hunchclient.freecam": "Freecam",
+  "key.hunchclient.fakelag": "FakeLag (Hold)",
+  "key.hunchclient.blink": "Blink"
+}

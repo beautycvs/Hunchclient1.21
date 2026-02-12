@@ -1,0 +1,7 @@
+{
+  "vertex": "hunchclient:fullscreen",
+  "fragment": "hunchclient:downsample",
+  "samplers": [
+    { "name": "DiffuseSampler" }
+  ]
+}

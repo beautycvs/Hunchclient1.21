@@ -1,0 +1,12 @@
+{
+  "vertex": "hunchclient:fullscreen",
+  "fragment": "hunchclient:etherwarp_glow_v",
+  "samplers": [
+    { "name": "DiffuseSampler" }
+  ],
+  "uniforms": [
+    { "name": "Radius", "type": "float", "count": 1, "values": [8.0] },
+    { "name": "TexelSize", "type": "float", "count": 2, "values": [1.0, 1.0] }
+  ]
+}
+

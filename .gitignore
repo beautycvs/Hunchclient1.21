@@ -1,0 +1,110 @@
+# gradle
+
+.gradle/
+build/
+out/
+classes/
+
+# eclipse
+
+*.launch
+
+# idea
+
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# vscode
+
+.settings/
+.vscode/
+bin/
+.classpath
+.project
+
+# macos
+
+*.DS_Store
+
+# fabric
+
+run/
+run_old/
+
+# java
+
+hs_err_*.log
+replay_*.log
+*.hprof
+*.jfr
+*.log
+skidfuscator-error-*.txt
+
+# Local build files
+build_output*.txt
+compile_errors.txt
+build_error.txt
+compile_log.txt
+# *.bat - now tracked
+!gradlew.bat
+nul
+
+# Temporary decompile folders
+decomp_old/
+temp_decompile/
+temp_entries/
+tmp_*
+temp_funnymap/
+temp_mc_sources/
+temp_smoother_glow/
+temp_build.txt
+temp_eth.txt
+temp_old_mixin.txt
+temp_renderer.java
+temp.txt
+temp.html
+
+# Large generated/vendor drops
+libs/
+mappings/
+fabric-*/
+OdinFabric-main/
+skyblocker_correct/
+dev/
+auth/
+
+# Documentation (keep only important ones)
+*.md
+!README.md
+!START_HERE.md
+
+# Local configs
+.env
+credentials.json
+config.json
+
+# Encryption tools (contain secrets!)
+Encrypt*.java
+*Token*.java
+*Secret*.java
+*.class
+
+# Auth tools - now tracked in git (but not node_modules)
+# tools/
+**/node_modules/
+
+# JS Files (allow tools/)
+# *.js
+
+# Binary archives / build outputs
+*.jar
+!skidfuscator.jar
+*.7z
+*.rar
+
+.skidfuscator
+
+# Minecraft decompiled sources (Mojang mappings)
+mc-sources/

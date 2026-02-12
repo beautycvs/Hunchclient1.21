@@ -1,0 +1,50 @@
+{
+  "targets": [
+    "swap",
+    "blur_h",
+    "blur_v"
+  ],
+  "passes": [
+    {
+      "name": "block_outline_blur_h",
+      "intarget": "minecraft:main",
+      "outtarget": "blur_h",
+      "uniforms": [
+        {
+          "name": "Radius",
+          "values": [ 4.0 ]
+        },
+        {
+          "name": "Direction",
+          "values": [ 1.0, 0.0 ]
+        }
+      ]
+    },
+    {
+      "name": "block_outline_blur_v",
+      "intarget": "blur_h",
+      "outtarget": "blur_v",
+      "uniforms": [
+        {
+          "name": "Radius",
+          "values": [ 4.0 ]
+        },
+        {
+          "name": "Direction",
+          "values": [ 0.0, 1.0 ]
+        }
+      ]
+    },
+    {
+      "name": "block_outline_composite",
+      "intarget": "blur_v",
+      "outtarget": "minecraft:main",
+      "auxtargets": [
+        {
+          "name": "OriginalMask",
+          "id": "minecraft:main"
+        }
+      ]
+    }
+  ]
+}

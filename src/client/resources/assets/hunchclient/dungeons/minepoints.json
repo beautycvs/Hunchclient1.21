@@ -1,0 +1,15 @@
+{
+  "copyright": "HunchClient Dungeonbreaker Minepoints",
+  "license": "Private",
+  "_comment": "This file stores minepoints for Dungeonbreaker block mining in dungeon rooms. Format matches secretlocations.json but for minepoints instead of secrets.",
+
+  "example-room-1x1": [
+    {
+      "secretName": "1 - Mine",
+      "category": "minepoint",
+      "x": 15,
+      "y": 68,
+      "z": 20
+    }
+  ]
+}

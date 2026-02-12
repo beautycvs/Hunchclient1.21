@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Galaxy Texture Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 1px solid #333;
+            display: block;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+        }
+        input[type="range"] {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Galaxy Texture Generator für HunchClient</h1>
+    <p>Generiere eine animierte Galaxy-Textur für deinen Viewmodel Overlay!</p>
+
+    <div class="controls">
+        <label>Nebula Intensity:</label>
+        <input type="range" id="nebula" min="0" max="100" value="70">
+        <span id="nebulaVal">70</span>%<br>
+
+        <label>Star Density:</label>
+        <input type="range" id="stars" min="0" max="500" value="200">
+        <span id="starsVal">200</span><br>
+
+        <label>Color Hue:</label>
+        <input type="range" id="hue" min="0" max="360" value="280">
+        <span id="hueVal">280</span>°<br>
+
+        <label>Glow Amount:</label>
+        <input type="range" id="glow" min="0" max="100" value="50">
+        <span id="glowVal">50</span>%<br>
+    </div>
+
+    <canvas id="galaxy" width="512" height="512"></canvas>
+
+    <button onclick="generateGalaxy()">Generate New Galaxy</button>
+    <button onclick="downloadTexture()">Download as galaxy.png</button>
+    <button onclick="animatePreview()">Preview Animation</button>
+
+    <script>
+        const canvas = document.getElementById('galaxy');
+        const ctx = canvas.getContext('2d');
+        let animating = false;
+
+        // Update value displays
+        document.getElementById('nebula').oninput = function() {
+            document.getElementById('nebulaVal').textContent = this.value;
+            generateGalaxy();
+        }
+        document.getElementById('stars').oninput = function() {
+            document.getElementById('starsVal').textContent = this.value;
+            generateGalaxy();
+        }
+        document.getElementById('hue').oninput = function() {
+            document.getElementById('hueVal').textContent = this.value;
+            generateGalaxy();
+        }
+        document.getElementById('glow').oninput = function() {
+            document.getElementById('glowVal').textContent = this.value;
+            generateGalaxy();
+        }
+
+        function generateGalaxy() {
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // Clear canvas with transparency
+            ctx.clearRect(0, 0, width, height);
+
+            // Create gradient background for nebula
+            const nebulaIntensity = document.getElementById('nebula').value / 100;
+            const hue = document.getElementById('hue').value;
+            const glowAmount = document.getElementById('glow').value / 100;
+
+            // Multiple radial gradients for nebula clouds
+            for (let i = 0; i < 5; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                const radius = 100 + Math.random() * 200;
+
+                const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                gradient.addColorStop(0, `hsla(${hue + Math.random() * 60}, 100%, 50%, ${nebulaIntensity * 0.3})`);
+                gradient.addColorStop(0.5, `hsla(${hue + Math.random() * 40}, 80%, 40%, ${nebulaIntensity * 0.2})`);
+                gradient.addColorStop(1, 'transparent');
+
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+            }
+
+            // Add cosmic dust/noise
+            const imageData = ctx.getImageData(0, 0, width, height);
+            const data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                if (Math.random() < 0.02) {
+                    const brightness = Math.random() * 50;
+                    data[i] = Math.min(255, data[i] + brightness);     // R
+                    data[i + 1] = Math.min(255, data[i + 1] + brightness); // G
+                    data[i + 2] = Math.min(255, data[i + 2] + brightness * 1.2); // B
+                }
+            }
+            ctx.putImageData(imageData, 0, 0);
+
+            // Add stars
+            const starCount = parseInt(document.getElementById('stars').value);
+
+            for (let i = 0; i < starCount; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                const size = Math.random() * 2;
+                const brightness = 0.3 + Math.random() * 0.7;
+
+                // Star glow
+                if (glowAmount > 0 && size > 1) {
+                    const glowGradient = ctx.createRadialGradient(x, y, 0, x, y, size * 3);
+                    glowGradient.addColorStop(0, `rgba(255, 255, 255, ${brightness * glowAmount})`);
+                    glowGradient.addColorStop(1, 'transparent');
+                    ctx.fillStyle = glowGradient;
+                    ctx.fillRect(x - size * 3, y - size * 3, size * 6, size * 6);
+                }
+
+                // Star core
+                ctx.fillStyle = `rgba(255, 255, 255, ${brightness})`;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Add some bright stars with crosses
+            for (let i = 0; i < 5; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+
+                ctx.strokeStyle = `rgba(255, 255, 255, 0.8)`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x - 10, y);
+                ctx.lineTo(x + 10, y);
+                ctx.moveTo(x, y - 10);
+                ctx.lineTo(x, y + 10);
+                ctx.stroke();
+
+                // Bright center
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(x, y, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function downloadTexture() {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'galaxy.png';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        function animatePreview() {
+            animating = !animating;
+            if (!animating) {
+                generateGalaxy(); // Reset to static
+                return;
+            }
+
+            let time = 0;
+            const baseCanvas = document.createElement('canvas');
+            baseCanvas.width = canvas.width;
+            baseCanvas.height = canvas.height;
+            const baseCtx = baseCanvas.getContext('2d');
+
+            // Save current galaxy
+            baseCtx.drawImage(canvas, 0, 0);
+
+            function animate() {
+                if (!animating) return;
+
+                // Clear and setup
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // LAYER 1: Scrolling base texture
+                ctx.save();
+                const scrollX = Math.sin(time * 0.3) * 20;
+                const scrollY = Math.cos(time * 0.2) * 15;
+                ctx.translate(scrollX, scrollY);
+
+                // Draw tiled for seamless scroll
+                for (let x = -1; x <= 1; x++) {
+                    for (let y = -1; y <= 1; y++) {
+                        ctx.drawImage(baseCanvas, x * canvas.width, y * canvas.height);
+                    }
+                }
+                ctx.restore();
+
+                // LAYER 2: Rotating nebula overlay
+                ctx.save();
+                ctx.globalCompositeOperation = 'screen';
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(time * 0.1);
+                ctx.translate(-canvas.width / 2, -canvas.height / 2);
+                ctx.globalAlpha = 0.3;
+
+                const gradient = ctx.createRadialGradient(
+                    canvas.width / 2, canvas.height / 2, 50,
+                    canvas.width / 2, canvas.height / 2, 300
+                );
+                gradient.addColorStop(0, `hsla(${280 + Math.sin(time) * 60}, 100%, 50%, 0.5)`);
+                gradient.addColorStop(0.5, `hsla(${200 + Math.cos(time) * 40}, 80%, 40%, 0.3)`);
+                gradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
+
+                // LAYER 3: Pulsing stars
+                ctx.globalCompositeOperation = 'lighter';
+                const starCount = 20;
+                for (let i = 0; i < starCount; i++) {
+                    const starTime = time + i * 0.5;
+                    const x = (Math.sin(starTime * 0.7 + i) * 0.4 + 0.5) * canvas.width;
+                    const y = (Math.cos(starTime * 0.5 + i * 1.3) * 0.4 + 0.5) * canvas.height;
+                    const pulse = Math.sin(starTime * 3) * 0.5 + 0.5;
+                    const size = (1 + pulse) * 3;
+
+                    // Star glow
+                    const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 5);
+                    glow.addColorStop(0, `rgba(255, 255, 255, ${pulse})`);
+                    glow.addColorStop(0.2, `rgba(200, 200, 255, ${pulse * 0.5})`);
+                    glow.addColorStop(1, 'transparent');
+                    ctx.fillStyle = glow;
+                    ctx.fillRect(x - size * 5, y - size * 5, size * 10, size * 10);
+
+                    // Star core
+                    ctx.fillStyle = 'white';
+                    ctx.beginPath();
+                    ctx.arc(x, y, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // LAYER 4: Color wave
+                ctx.globalCompositeOperation = 'overlay';
+                ctx.globalAlpha = 0.2;
+                const waveGradient = ctx.createLinearGradient(
+                    0, 0,
+                    canvas.width, canvas.height
+                );
+                waveGradient.addColorStop(0, `hsla(${(time * 50) % 360}, 100%, 50%, 0.5)`);
+                waveGradient.addColorStop(0.5, `hsla(${(time * 50 + 180) % 360}, 100%, 50%, 0.5)`);
+                waveGradient.addColorStop(1, `hsla(${(time * 50 + 360) % 360}, 100%, 50%, 0.5)`);
+                ctx.fillStyle = waveGradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Reset
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.globalAlpha = 1;
+
+                // Show it's animated
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('ANIMATED PREVIEW', 10, canvas.height - 10);
+
+                time += 0.015;
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Generate initial galaxy
+        generateGalaxy();
+    </script>
+</body>
+</html>

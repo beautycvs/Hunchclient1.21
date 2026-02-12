@@ -1,0 +1,27 @@
+Galaxy Texture Instructions
+===========================
+
+Place your galaxy texture here as: galaxy.png
+
+Requirements:
+- Format: PNG with transparency (RGBA)
+- Recommended size: 512x512 or 1024x1024
+- Should tile seamlessly for best effect
+
+You can use any space/galaxy texture, for example:
+- Nebula patterns
+- Star fields
+- Cosmic clouds
+- Abstract space patterns
+
+The shader supports multiple overlay modes:
+- Galaxy Mode: Uses the texture with scrolling animation
+- Rainbow Mode: Generates animated rainbow gradient
+- Prismatic Mode: Creates holographic effect
+- Custom Mode: Uses texture with custom color tinting
+
+Example free galaxy textures can be found at:
+- OpenGameArt.org
+- NASA Image Gallery (public domain)
+- Unsplash (space category)
+- Create your own with GIMP/Photoshop filters

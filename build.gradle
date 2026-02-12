@@ -1,0 +1,225 @@
+plugins {
+	id 'fabric-loom' version "${loom_version}"
+	id 'org.jetbrains.kotlin.jvm' version "${kotlin_version}"
+	id 'maven-publish'
+	id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+def nativeArchiveSuffix = (project.findProperty("nativeSuffix") ?: "").toString().trim()
+if (nativeArchiveSuffix) {
+	nativeArchiveSuffix = nativeArchiveSuffix.replaceAll("\\s+", "-")
+}
+
+base {
+	archivesName = nativeArchiveSuffix ?
+		"${project.archives_base_name}-${nativeArchiveSuffix}" :
+		project.archives_base_name
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		name = "Fabric"
+		url = "https://maven.fabricmc.net/"
+	}
+	maven {
+		name = "Meteor"
+		url = "https://maven.meteordev.org/releases"
+	}
+	maven {
+		name = "JitPack"
+		url = "https://jitpack.io"
+	}
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"hunchclient" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+
+	runs {
+		client {
+			property "hunch.dev", "true"
+
+			// HotswapAgent for enhanced hot-reloading (disabled - file not present)
+			// Note: For full Mixin hotswap, use JetBrains Runtime (JBR) with -XX:+AllowEnhancedClassRedefinition
+			// vmArg "-javaagent:${System.getProperty('user.home')}/.local/hotswap/hotswap-agent.jar"
+		}
+	}
+}
+
+sourceSets {
+	main {
+		kotlin.srcDir("src/main/kotlin")
+	}
+	client {
+		kotlin.srcDir("src/client/kotlin")
+		compileClasspath += main.output
+		runtimeClasspath += main.output
+	}
+}
+
+configurations.all {
+	exclude group: 'ladysnake', module: 'satin'
+	exclude group: 'com.github.ladysnake', module: 'satin'
+}
+
+// Limit bundled natives; override with -PnativeTargets=windows,linux,macos or all.
+def nativeTargetsProp = (project.findProperty("nativeTargets") ?: "").toString().trim()
+def nativeTargets = nativeTargetsProp ?
+	nativeTargetsProp.split(",").collect { it.trim().toLowerCase() }.findAll { it } :
+	[]
+if (nativeTargets.isEmpty()) {
+	def os = org.gradle.internal.os.OperatingSystem.current()
+	if (os.isWindows()) {
+		nativeTargets = ["windows"]
+	} else if (os.isLinux()) {
+		nativeTargets = ["linux"]
+	} else if (os.isMacOsX()) {
+		nativeTargets = ["macos"]
+	} else {
+		nativeTargets = ["all"]
+	}
+}
+def includeAllNatives = nativeTargets.contains("all")
+def wantWindows = includeAllNatives || nativeTargets.contains("windows")
+def wantLinux = includeAllNatives || nativeTargets.contains("linux")
+def wantMac = includeAllNatives || nativeTargets.contains("macos")
+
+// Always include Windows and Linux natives for cross-platform support
+def lwjglNativeClassifiers = ["natives-windows", "natives-linux"]
+if (wantMac) lwjglNativeClassifiers += ["natives-macos", "natives-macos-arm64"]
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
+	modImplementation("meteordevelopment:orbit:0.2.3")
+	include("meteordevelopment:orbit:0.2.3")
+
+	// CRITICAL FIX: Client source set needs access to main source set classes
+	// This is required when using splitEnvironmentSourceSets()
+	clientImplementation sourceSets.main.output
+
+	def lwjgl_version = "3.3.3"
+	implementation("org.lwjgl:lwjgl-nanovg:${lwjgl_version}")
+	include("org.lwjgl:lwjgl-nanovg:${lwjgl_version}")
+	lwjglNativeClassifiers.each { classifier ->
+		runtimeOnly("org.lwjgl:lwjgl-nanovg:${lwjgl_version}:${classifier}")
+		include("org.lwjgl:lwjgl-nanovg:${lwjgl_version}:${classifier}")
+	}
+
+	implementation("org.lwjgl:lwjgl-stb:${lwjgl_version}")
+	lwjglNativeClassifiers.each { classifier ->
+		runtimeOnly("org.lwjgl:lwjgl-stb:${lwjgl_version}:${classifier}")
+	}
+
+	modImplementation("net.java.dev.jna:jna:5.14.0")
+	modImplementation("net.java.dev.jna:jna-platform:5.14.0")
+	modImplementation("com.github.steos:jnafilechooser:1.1.2")
+	include("net.java.dev.jna:jna:5.14.0")
+	include("net.java.dev.jna:jna-platform:5.14.0")
+	include("com.github.steos:jnafilechooser:1.1.2")
+	// Ensure client source set sees the chooser too
+	clientImplementation("com.github.steos:jnafilechooser:1.1.2")
+	clientImplementation("net.java.dev.jna:jna:5.14.0")
+	clientImplementation("net.java.dev.jna:jna-platform:5.14.0")
+
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": inputs.properties.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+	it.kotlinOptions {
+		jvmTarget = "21"
+		freeCompilerArgs += [
+			"-Xjvm-default=all",
+			"-Xlambdas=indy"
+		]
+	}
+}
+
+java {
+	withSourcesJar()
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+// Fix duplicate files in sourcesJar
+tasks.withType(org.gradle.jvm.tasks.Jar) {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+kotlin {
+	jvmToolchain(21)
+}
+
+jar {
+	inputs.property "archivesName", project.base.archivesName
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	from("LICENSE") {
+		rename { "${it}_${inputs.properties.archivesName}"}
+	}
+}
+
+task buildRelease {
+	group = 'hunchclient'
+	description = 'Builds a public release JAR'
+
+	dependsOn clean
+	dependsOn build
+
+	doLast {
+		def archivesName = base.archivesName.get()
+		def releaseJar = file("${buildDir}/libs/${archivesName}-${project.version}.jar")
+
+		println ""
+		println "="*60
+		println " HunchClient Release Build Complete!"
+		println "="*60
+		println ""
+		println "Release JAR:     ${releaseJar.name}"
+		println "Size:            ${String.format('%.2f', releaseJar.length() / 1024 / 1024)} MB"
+		println "="*60
+	}
+}
+
+tasks.named("build") {
+	mustRunAfter(tasks.named("clean"))
+}
+
+// configure the maven publication
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
+			from components.java
+		}
+	}
+
+	repositories {
+		// Add repositories to publish to here.
+	}
+}
