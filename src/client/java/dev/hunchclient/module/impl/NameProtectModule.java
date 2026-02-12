@@ -69,7 +69,7 @@ public class NameProtectModule extends Module implements ConfigurableModule, Set
     private final Map<Component, Component> sanitizedTextCache = Collections.synchronizedMap(new WeakHashMap<>());
     private static final int ORDERED_TEXT_CACHE_SIZE = 512;
     private final ThreadLocal<Map<FormattedCharSequence, FormattedCharSequence>> sanitizedOrderedTextCache =
-        ThreadLocal.withInitial(() -> new LinkedHashMap<>(16, 0.75f, true) {
+        ThreadLocal.withInitial(() -> new LinkedHashMap<FormattedCharSequence, FormattedCharSequence>(16, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<FormattedCharSequence, FormattedCharSequence> eldest) {
                 return size() > ORDERED_TEXT_CACHE_SIZE;

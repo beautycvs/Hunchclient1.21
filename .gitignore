@@ -72,8 +72,8 @@ mappings/
 fabric-*/
 OdinFabric-main/
 skyblocker_correct/
-dev/
-auth/
+/dev/
+/auth/
 
 # Documentation (keep only important ones)
 *.md
