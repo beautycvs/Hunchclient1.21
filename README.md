@@ -26,7 +26,7 @@
 4. Launch the game
 
 > [!NOTE]
-> You can find the hunchclient .jar file in the actions tab in the top left. 
+> You can find the hunchclient .jar file in the actions tab at the top left. 
 <br>Click on the latest workflow and download the artifacts; the .jar file will be inside the zip folder.
 
 <h1 align="center">Features</h1>
