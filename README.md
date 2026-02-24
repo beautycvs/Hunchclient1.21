@@ -1,10 +1,35 @@
-# HunchClient
+<h1 align="center">HunchClient</h1>
 
-A Minecraft 1.21.10 Fabric client mod focused on Hypixel Skyblock Dungeons QOL.
+<p align="center">A Minecraft 1.21.10 Fabric client mod focused on Hypixel Skyblock Dungeons QOL.</p>
 
-[![Discord](https://img.shields.io/discord/YOUR_ID?label=Discord&logo=discord&color=5865F2)](https://discord.gg/hunchclient)
+<div align="center">
+  
+[![Discord](https://img.shields.io/discord/1428842479087779934?label=Discord&logo=discord&color=5865F2&style=for-the-badge)](https://discord.gg/hunchclient)
+![Badge](https://img.shields.io/badge/Version-1.0.0-orange?style=for-the-badge)
+![Badge](https://img.shields.io/badge/Loader-Fabric-brightgreen?style=for-the-badge)
 
-## Features
+## Installation
+
+</div>
+
+### Requirements
+- Java 21 installed
+- Minecraft 1.21.10
+- [Fabric Loader](https://fabricmc.net/use/) 0.17.3+
+- [Fabric API](https://modrinth.com/mod/fabric-api) 0.138.3+1.21.10
+- [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) 1.13.2+
+
+### Setup
+1. Create a Fabric Loader 1.21.10 instance
+2. Drop the required mods into `.minecraft/mods/`
+3. Drop `hunchclient-1.0.0-1.21.10.jar` into `.minecraft/mods/`
+4. Launch the game
+
+> [!NOTE]
+> You can find the hunchclient .jar file in the actions tab in the top left. 
+<br>Click on the latest workflow and download the artifacts; the .jar file will be inside the zip folder.
+
+<h1 align="center">Features</h1>
 
 ### Dungeons
 - **Terminal Solver** - Auto-solves F7/M7 terminals 
@@ -78,21 +103,6 @@ HUD elements can be repositioned via `/hudeditor`.
 | `/hcc <message>` | Send IRC message |
 | `/f7debug` | Show current F7 phase info |
 | `/hudeditor` | Open HUD element editor |
-
-## Installation
-
-### Requirements
-- Java 21
-- Minecraft 1.21.10
-- [Fabric Loader](https://fabricmc.net/use/) 0.17.3+
-- [Fabric API](https://modrinth.com/mod/fabric-api) 0.138.3+1.21.10
-- [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) 1.13.2+
-
-### Setup
-1. Install Fabric Loader for 1.21.10
-2. Drop the required mods into `.minecraft/mods/`
-3. Drop `hunchclient-1.0.0-1.21.10.jar` into `.minecraft/mods/`
-4. Launch the game
 
 ## Building from Source
 
