@@ -24,14 +24,14 @@ public class GuiSettings {
     private int windowY = 0;
     private int windowWidth = 450;
     private int windowHeight = 400;
-    private float guiScale = 1.0f;
+    private float guiScale = 1.1f;
     private int selectedTab = 0;
 
     // Theme settings
     private String selectedTheme = "dark";
     private boolean customColorsEnabled = false;
     private String selectedFont = "default";
-    private float fontSize = 1.0f;
+    private float fontSize = 0.7f;
 
     // Module card states (which modules are expanded)
     private Map<String, Boolean> expandedModules = new HashMap<>();
