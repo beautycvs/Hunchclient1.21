@@ -162,6 +162,7 @@ public class CustomFontModule extends Module implements ConfigurableModule, Sett
                 value -> {
                     fontSize = value / 100f; // Convert back to multiplier
                     NVGRenderer.clearFontCache(); // Clear cache when size changes
+                    dev.hunchclient.gui.GuiSettings.getInstance().setFontSize(fontSize); // Sync to GuiSettings so the GUI actually uses this size
                 }
             ).withDecimals(0).withSuffix("%"));
 
@@ -224,6 +225,7 @@ public class CustomFontModule extends Module implements ConfigurableModule, Sett
         }
         if (data.has("fontSize")) {
             fontSize = data.get("fontSize").getAsFloat();
+            dev.hunchclient.gui.GuiSettings.getInstance().setFontSize(fontSize); // Sync saved font size to GuiSettings on startup
         }
 
         // Apply font after loading config
