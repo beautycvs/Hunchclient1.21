@@ -23,12 +23,11 @@
 1. Create a Fabric Loader 1.21.10 instance
 2. Drop the required mods into `.minecraft/mods/`
 3. Drop `hunchclient-1.0.0-1.21.10.jar` into `.minecraft/mods/`
-4. Launch the game
-
+4. Launch the game 
 > [!NOTE]
 > You can find the hunchclient .jar file in the actions tab at the top left. 
 <br>Click on the latest workflow and download the artifacts; the .jar file will be inside the zip folder.
-
+> <br><b>Right Shift</b> to open the GUI, this can be changed in minecraft's "Controls" tab.
 <h1 align="center">Features</h1>
 
 ### Dungeons
