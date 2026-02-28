@@ -32,7 +32,7 @@
 > <br>HUD elements can be changed via "/hudedit" in chat.
 <h1 align="center">Features</h1>
 
-## Dungeons
+### Dungeons
 - **Terminal Solver** - Auto-solves F7/M7 terminals 
 - **Secret Routes** - Pathfinding waypoints for dungeon secrets with etherwarp points and TNT locations
 - **Secret Waypoints** - Highlights all secret locations 
@@ -57,7 +57,7 @@
 - **OG List** - See whos OG
 - **Name Protect** - Protects ur Name
 
-## Visuals
+### Visuals
 - **Dark Mode Shader** - Full post-processing dark mode
 - **Custom Animations** - 1.7 swing, block hit, custom speed
 - **Custom Font** - NanoVG-based font rendering with TTF support
@@ -75,7 +75,7 @@
 - **Disable Fog** - Remove distance fog
 - **Custom Hit Sound** - Replace hit sounds with custom .ogg files
 
-## Utilities
+### Utilities
 - **Freecam** - Free-floating spectator camera
 - **Blink** - Queue outgoing packets for teleport effect (Bannable)
 - **FakeLag** - Delay packets (Clumsy) (Bannable)
@@ -84,7 +84,7 @@
 - **Kaomoji Replacer** - Replace text with kaomoji faces
 - **Config Import/Export** - Save and load module configurations
 
-## F7 Terminal Simulator
+### F7 Terminal Simulator
 - **F7Sim** - Practice terminals locally with simulated armor stands
 - **Ivor Fohr** - Full device simulation for i4
 
