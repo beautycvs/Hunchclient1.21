@@ -37,7 +37,7 @@ public class DarkModeShaderModule extends Module implements ConfigurableModule, 
     private float brightness = 1.5f; // 0.1-5.0 (compensates for tint darkening)
 
     public DarkModeShaderModule() {
-        super("DarkModeShader", "Color tint overlay (works with Fullbright)", Category.VISUALS, true);
+        super("DarkModeShader", "Color tint overlay (works with Fullbright)", Category.VISUALS, false);
         instance = this;
     }
 
