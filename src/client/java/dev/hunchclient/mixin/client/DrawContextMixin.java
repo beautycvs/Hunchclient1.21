@@ -253,9 +253,14 @@ public class DrawContextMixin {
 
         CustomFontModule fontModule = CustomFontModule.getInstance();
         // EARLY EXIT: Skip processing if module is disabled or font not ready
-        if (fontModule == null || !fontModule.isEnabled() || !fontModule.shouldReplaceMinecraftFont()) {
-            return;
-        }
+        if (fontModule == null || !fontModule.isEnabled()) {
+    return;
+}
+// Allow custom font if replacing MC font globally, OR if we're inside the SkeetGUI
+boolean inSkeetGui = dev.hunchclient.gui.SkeetScreen2.getGuiScissorBounds() != null;
+if (!fontModule.shouldReplaceMinecraftFont() && !inSkeetGui) {
+    return;
+}
 
         Font customFont = fontModule.getSelectedFont();
         if (customFont == null || text == null) {
@@ -383,9 +388,14 @@ public class DrawContextMixin {
 
         CustomFontModule fontModule = CustomFontModule.getInstance();
         // EARLY EXIT: Skip processing if module is disabled or font not ready
-        if (fontModule == null || !fontModule.isEnabled() || !fontModule.shouldReplaceMinecraftFont()) {
-            return;
-        }
+        if (fontModule == null || !fontModule.isEnabled()) {
+    return;
+}
+// Allow custom font if replacing MC font globally, OR if we're inside the SkeetGUI
+boolean inSkeetGui = dev.hunchclient.gui.SkeetScreen2.getGuiScissorBounds() != null;
+if (!fontModule.shouldReplaceMinecraftFont() && !inSkeetGui) {
+    return;
+}
 
         Font customFont = fontModule.getSelectedFont();
         if (customFont == null || text == null || text.isEmpty()) {
@@ -526,9 +536,14 @@ public class DrawContextMixin {
 
         CustomFontModule fontModule = CustomFontModule.getInstance();
         // EARLY EXIT: Skip processing if module is disabled or font not ready
-        if (fontModule == null || !fontModule.isEnabled() || !fontModule.shouldReplaceMinecraftFont()) {
-            return;
-        }
+        if (fontModule == null || !fontModule.isEnabled()) {
+    return;
+}
+// Allow custom font if replacing MC font globally, OR if we're inside the SkeetGUI
+boolean inSkeetGui = dev.hunchclient.gui.SkeetScreen2.getGuiScissorBounds() != null;
+if (!fontModule.shouldReplaceMinecraftFont() && !inSkeetGui) {
+    return;
+}
 
         Font customFont = fontModule.getSelectedFont();
         if (customFont == null || text == null) {
@@ -671,9 +686,14 @@ public class DrawContextMixin {
 
         CustomFontModule fontModule = CustomFontModule.getInstance();
         // EARLY EXIT: Skip processing if module is disabled or font not ready
-        if (fontModule == null || !fontModule.isEnabled() || !fontModule.shouldReplaceMinecraftFont()) {
-            return;
-        }
+        if (fontModule == null || !fontModule.isEnabled()) {
+    return;
+}
+// Allow custom font if replacing MC font globally, OR if we're inside the SkeetGUI
+boolean inSkeetGui = dev.hunchclient.gui.SkeetScreen2.getGuiScissorBounds() != null;
+if (!fontModule.shouldReplaceMinecraftFont() && !inSkeetGui) {
+    return;
+}
 
         Font customFont = fontModule.getSelectedFont();
         if (customFont == null || text == null) {
