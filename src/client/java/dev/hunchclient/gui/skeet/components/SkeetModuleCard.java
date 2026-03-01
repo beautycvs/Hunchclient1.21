@@ -92,7 +92,7 @@ context.drawString(textRenderer, moduleName, nameX, y + 8, nameColor, false);
         context.drawString(textRenderer, status, statusX, y + 8, statusColor, false);
 
         // Description (smaller text)
-        context.drawString(textRenderer, module.getDescription(), x + PADDING + 5, y + 20, SkeetTheme.TEXT_DIM(), false);
+        context.drawString(textRenderer, module.getDescription(), x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
 
         // Bottom border
         context.fill(x, y + HEADER_HEIGHT - 1, x + width, y + HEADER_HEIGHT, SkeetTheme.BORDER_DEFAULT());
