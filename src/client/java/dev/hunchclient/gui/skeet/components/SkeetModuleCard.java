@@ -68,10 +68,15 @@ public class SkeetModuleCard extends SkeetComponent {
         int iconColor = hoverAmount > 0.5f ? SkeetTheme.ACCENT_PRIMARY() : SkeetTheme.TEXT_SECONDARY();
         context.drawString(textRenderer, expandIcon, x + PADDING, y + 8, iconColor, false);
 
-        // Module name
+        // Break line if it's too long i think Idk.
         int nameX = x + PADDING + textRenderer.width(expandIcon) + 6;
-        int nameColor = module.isEnabled() ? SkeetTheme.ACCENT_PRIMARY() : SkeetTheme.TEXT_PRIMARY();
-        context.drawString(textRenderer, module.getName(), nameX, y + 8, nameColor, false);
+        int maxNameWidth = width - PADDING * 3 - textRenderer.width(expandIcon) - textRenderer.width("OFF") - 20;
+        String moduleName = module.getName();
+        while (moduleName.length() > 3 && textRenderer.width(moduleName) > maxNameWidth) {
+            moduleName = moduleName.substring(0, moduleName.length() - 1);
+}
+int nameColor = module.isEnabled() ? SkeetTheme.ACCENT_PRIMARY() : SkeetTheme.TEXT_PRIMARY();
+context.drawString(textRenderer, moduleName, nameX, y + 8, nameColor, false);
 
         // Warning icon if risky (RISKY or VERY_RISKY)
         if (module.isRisky()) {
