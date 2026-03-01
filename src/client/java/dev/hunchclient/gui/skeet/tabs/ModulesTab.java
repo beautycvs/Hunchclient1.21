@@ -67,15 +67,15 @@ public class ModulesTab extends SkeetTab {
 
     @Override
     public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        // Title
-        context.drawString(textRenderer, name.toUpperCase(), x + SkeetTheme.SPACING_MD, y + 5, SkeetTheme.ACCENT_PRIMARY(), false);
+// Title
+context.drawString(textRenderer, name.toUpperCase(), x + SkeetTheme.SPACING_MD, y + 5, SkeetTheme.ACCENT_PRIMARY(), false);
 
-        // Separator
-        context.fill(x + SkeetTheme.SPACING_MD, y + 20, x + width - SkeetTheme.SPACING_MD, y + 21, SkeetTheme.BORDER_DEFAULT());
+// Separator
+context.fill(x + SkeetTheme.SPACING_MD, y + 28, x + width - SkeetTheme.SPACING_MD, y + 29, SkeetTheme.BORDER_DEFAULT());
 
-        // Scrollable content area
-        int contentY = y + 30;
-        int contentHeight = height - 40;
+// Scrollable content area
+int contentY = y + 38;
+int contentHeight = height - 48;
 
         // Enable scissor for clipping
         context.enableScissor(x, contentY, x + width, contentY + contentHeight);
