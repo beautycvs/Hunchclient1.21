@@ -77,30 +77,35 @@ int maxNameWidth = width - PADDING * 3
 String moduleName = module.getName();
 int nameColor = module.isEnabled() ? SkeetTheme.ACCENT_PRIMARY() : SkeetTheme.TEXT_PRIMARY();
 
+// Split into rough chunks by spaces
+String[] rough = moduleName.split(" ");
 java.util.List<String> lines = new java.util.ArrayList<>();
-
-// Hard character-based wrapping (works even without spaces)
 StringBuilder currentLine = new StringBuilder();
 
-for (char c : moduleName.toCharArray()) {
-    currentLine.append(c);
-
-    if (textRenderer.width(currentLine.toString()) > maxNameWidth) {
-        currentLine.deleteCharAt(currentLine.length() - 1);
-        lines.add(currentLine.toString());
-        currentLine = new StringBuilder();
-        currentLine.append(c);
+// Build lines
+for (String chunk : rough) {
+    if (textRenderer.width(currentLine + chunk) <= maxNameWidth) {
+        if (currentLine.length() > 0) currentLine.append(" ");
+        currentLine.append(chunk);
+    } else {
+        if (currentLine.length() > 0) {
+            lines.add(currentLine.toString());
+        }
+        currentLine = new StringBuilder(chunk);
     }
 }
-
 if (currentLine.length() > 0) {
     lines.add(currentLine.toString());
 }
 
-// Always scale if more than 1 line
-boolean needsScale = lines.size() > 1;
-
-float scale = needsScale ? 0.6f : 1.0f;
+// Decide scaling: check if *any* line is too wide
+float scale = 1.0f;
+for (String line : lines) {
+    if (textRenderer.width(line) > maxNameWidth) {
+        scale = 0.6f;
+        break;
+    }
+}
 
 context.pose().pushMatrix();
 context.pose().translate((float) nameX, (float) (y + 8));
