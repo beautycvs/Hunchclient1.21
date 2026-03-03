@@ -68,6 +68,7 @@ public class SkeetModuleCard extends SkeetComponent {
         int iconColor = hoverAmount > 0.5f ? SkeetTheme.ACCENT_PRIMARY() : SkeetTheme.TEXT_SECONDARY();
         context.drawString(textRenderer, expandIcon, x + PADDING, y + 8, iconColor, false);
 
+// Wrap lines in GUI in case text is too long
 int nameX = x + PADDING + textRenderer.width(expandIcon) + 6;
 int maxNameWidth = width - PADDING * 3 
         - textRenderer.width(expandIcon) 
@@ -76,24 +77,19 @@ int maxNameWidth = width - PADDING * 3
 String moduleName = module.getName();
 int nameColor = module.isEnabled() ? SkeetTheme.ACCENT_PRIMARY() : SkeetTheme.TEXT_PRIMARY();
 
-// Build wrapped lines
 java.util.List<String> lines = new java.util.ArrayList<>();
+
+// Hard character-based wrapping (works even without spaces)
 StringBuilder currentLine = new StringBuilder();
 
-for (String word : moduleName.split(" ")) {
-    String testLine = currentLine.length() == 0 
-            ? word 
-            : currentLine + " " + word;
+for (char c : moduleName.toCharArray()) {
+    currentLine.append(c);
 
-    if (textRenderer.width(testLine) <= maxNameWidth) {
-        currentLine.setLength(0);
-        currentLine.append(testLine);
-    } else {
-        if (currentLine.length() > 0) {
-            lines.add(currentLine.toString());
-        }
-        currentLine.setLength(0);
-        currentLine.append(word);
+    if (textRenderer.width(currentLine.toString()) > maxNameWidth) {
+        currentLine.deleteCharAt(currentLine.length() - 1);
+        lines.add(currentLine.toString());
+        currentLine = new StringBuilder();
+        currentLine.append(c);
     }
 }
 
@@ -101,16 +97,9 @@ if (currentLine.length() > 0) {
     lines.add(currentLine.toString());
 }
 
-// Check if scaling needed
-boolean needsScale = false;
-for (String line : lines) {
-    if (textRenderer.width(line) > maxNameWidth) {
-        needsScale = true;
-        break;
-    }
-}
+// Always scale if more than 1 line
+boolean needsScale = lines.size() > 1;
 
-// Render with proper 1.21 matrix calls
 float scale = needsScale ? 0.6f : 1.0f;
 
 context.pose().pushMatrix();
