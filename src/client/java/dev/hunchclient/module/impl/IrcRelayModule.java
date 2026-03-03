@@ -277,8 +277,6 @@ public class IrcRelayModule extends Module {
             ? json.getAsJsonArray("lines")
             : null;
 
-        System.out.println("[IRC Debug] Poll OK, lines count: " + (lines == null ? "null" : lines.size()) + " lastTs=" + lastTimestamp);
-
         if (lines == null) {
             return;
         }
