@@ -729,13 +729,9 @@ if (chatWindow != null) {
                 playNotification();
 
                 // Notify chat window to route DM (only show in DM window, not in main chat)
-               // Forward to IRC Chat Window if available
+               // Notify chat window to route DM (only show in DM window, not in main chat)
                 if (chatWindow != null) {
-                    NameProtectModule nameProtect = NameProtectModule.getInstance();
-                    String protectedSender = nameProtect != null ? nameProtect.sanitizeString(sender) : sender;
-                    String protectedText = nameProtect != null ? nameProtect.sanitizeString(safeText) : safeText;
-                    chatWindow.addIrcMessage(protectedSender, protectedText, timestamp, isMe);
-                }
+                    chatWindow.handleIncomingDm(sender, content, timestamp);
                 }
             });
         }
