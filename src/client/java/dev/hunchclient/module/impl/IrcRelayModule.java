@@ -230,13 +230,9 @@ public class IrcRelayModule extends Module {
         sendIrcChatToClient("§b[IRC]§r §a" + user + "§7: §f" + timePrefix + " " + processed);
 
         // Add to GUI chat window immediately
-        // Forward to IRC Chat Window if available
-if (chatWindow != null) {
-    NameProtectModule nameProtect = NameProtectModule.getInstance();
-    String protectedSender = nameProtect != null ? nameProtect.sanitizeString(sender) : sender;
-    String protectedText = nameProtect != null ? nameProtect.sanitizeString(safeText) : safeText;
-    chatWindow.addIrcMessage(protectedSender, protectedText, timestamp, isMe);
-}
+        if (chatWindow != null) {
+            chatWindow.addIrcMessage(user, processed, System.currentTimeMillis(), true);
+        }
 
         SecureApiClient.ircSend(user, processed, getLocalOffsetMinutes())
             .thenAccept(result -> {
@@ -333,8 +329,12 @@ if (chatWindow != null) {
                 sendIrcChatToClient("§b[IRC]§r " + nameColor + sender + "§7: §f" + timePrefix + " " + safeText);
 
                 // Forward to IRC Chat Window if available
+                // Forward to IRC Chat Window if available
                 if (chatWindow != null) {
-                    chatWindow.addIrcMessage(sender, safeText, timestamp, isMe);
+                    NameProtectModule nameProtect = NameProtectModule.getInstance();
+                    String protectedSender = nameProtect != null ? nameProtect.sanitizeString(sender) : sender;
+                    String protectedText = nameProtect != null ? nameProtect.sanitizeString(safeText) : safeText;
+                    chatWindow.addIrcMessage(protectedSender, protectedText, timestamp, isMe);
                 }
             });
         }
