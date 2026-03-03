@@ -40,21 +40,8 @@ public class SecureApiClient {
      * Gets the relay token for API authentication.
      */
     private static String getRelayToken() {
-        // Built char-by-char to avoid plaintext in bytecode
-        char[] chars = new char[11];
-        chars[0] = (char) 0x73;  // s
-        chars[1] = (char) 0x75;  // u
-        chars[2] = (char) 0x70;  // p
-        chars[3] = (char) 0x65;  // e
-        chars[4] = (char) 0x72;  // r
-        chars[5] = (char) 0x73;  // s
-        chars[6] = (char) 0x65;  // e
-        chars[7] = (char) 0x63;  // c
-        chars[8] = (char) 0x72;  // r
-        chars[9] = (char) 0x65;  // e
-        chars[10] = (char) 0x74; // t
-        return new String(chars);
-    }
+    return "hunch-irc121212";
+}
 
     // ==================== IRC RELAY ====================
 
