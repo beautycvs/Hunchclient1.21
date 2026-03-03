@@ -227,14 +227,17 @@ public class IrcRelayModule extends Module {
 
         String localTime = renderHms(System.currentTimeMillis(), getLocalOffsetMinutes());
         String timePrefix = "§8[§7C-" + localTime + "§8]§r";
-        sendIrcChatToClient("§b[IRC]§r §a" + user + "§7: §f" + timePrefix + " " + processed);
+        NameProtectModule nameProtect = NameProtectModule.getInstance();
+        String displayName = nameProtect != null && nameProtect.isEnabled()
+            ? nameProtect.sanitizeString(user) : user;
+        sendIrcChatToClient("§b[IRC]§r §a" + displayName + "§7: §f" + timePrefix + " " + processed);
 
         // Add to GUI chat window immediately
         if (chatWindow != null) {
-            chatWindow.addIrcMessage(user, processed, System.currentTimeMillis(), true);
+            chatWindow.addIrcMessage(displayName, processed, System.currentTimeMillis(), true);
         }
 
-        SecureApiClient.ircSend(user, processed, getLocalOffsetMinutes())
+        SecureApiClient.ircSend(displayName, processed, getLocalOffsetMinutes())
             .thenAccept(result -> {
                 if (!result.isSuccess() || !result.getOk()) {
                     removePendingMessage(processed);
