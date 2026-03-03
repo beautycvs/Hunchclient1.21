@@ -68,7 +68,7 @@ public class SkeetModuleCard extends SkeetComponent {
         int iconColor = hoverAmount > 0.5f ? SkeetTheme.ACCENT_PRIMARY() : SkeetTheme.TEXT_SECONDARY();
         context.drawString(textRenderer, expandIcon, x + PADDING, y + 8, iconColor, false);
 
-        int nameX = x + PADDING + textRenderer.width(expandIcon) + 6;
+int nameX = x + PADDING + textRenderer.width(expandIcon) + 6;
 int maxNameWidth = width - PADDING * 3 
         - textRenderer.width(expandIcon) 
         - textRenderer.width("OFF") - 20;
@@ -101,7 +101,7 @@ if (currentLine.length() > 0) {
     lines.add(currentLine.toString());
 }
 
-// Check if scaling is needed
+// Check if scaling needed
 boolean needsScale = false;
 for (String line : lines) {
     if (textRenderer.width(line) > maxNameWidth) {
@@ -110,12 +110,12 @@ for (String line : lines) {
     }
 }
 
-// Render with scaling
+// Render with proper 1.21 matrix calls
 float scale = needsScale ? 0.6f : 1.0f;
 
-context.pose().pushPose();
-context.pose().translate(nameX, y + 8, 0);
-context.pose().scale(scale, scale, 1f);
+context.pose().pushMatrix();
+context.pose().translate((float) nameX, (float) (y + 8));
+context.pose().scale(scale, scale);
 
 int drawY = 0;
 int lineHeight = textRenderer.lineHeight + 2;
@@ -125,7 +125,7 @@ for (String line : lines) {
     drawY += lineHeight;
 }
 
-context.pose().popPose();
+context.pose().popMatrix();
 
         // Warning icon if risky (RISKY or VERY_RISKY)
         if (module.isRisky()) {
