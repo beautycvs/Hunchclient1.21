@@ -313,10 +313,14 @@ public class IrcRelayModule extends Module {
                 }
 
                 boolean isMe = sender.equalsIgnoreCase(mc.player.getName().getString());
-                boolean skipEcho = isMe && removePendingMessage(safeText);
-                if (skipEcho) {
-                    return;
-                }
+boolean skipEcho = isMe && removePendingMessage(safeText);
+if (skipEcho) {
+    return;
+}
+// Skip bot messages
+if (sender.equalsIgnoreCase("HunchClient IRC")) {
+    return;
+}
 
                 if (!isMe) {
                     playNotification();
