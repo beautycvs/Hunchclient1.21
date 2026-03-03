@@ -68,15 +68,64 @@ public class SkeetModuleCard extends SkeetComponent {
         int iconColor = hoverAmount > 0.5f ? SkeetTheme.ACCENT_PRIMARY() : SkeetTheme.TEXT_SECONDARY();
         context.drawString(textRenderer, expandIcon, x + PADDING, y + 8, iconColor, false);
 
-        // Break line if it's too long i think Idk.
         int nameX = x + PADDING + textRenderer.width(expandIcon) + 6;
-        int maxNameWidth = width - PADDING * 3 - textRenderer.width(expandIcon) - textRenderer.width("OFF") - 20;
-        String moduleName = module.getName();
-        while (moduleName.length() > 3 && textRenderer.width(moduleName) > maxNameWidth) {
-            moduleName = moduleName.substring(0, moduleName.length() - 1);
-}
+int maxNameWidth = width - PADDING * 3 
+        - textRenderer.width(expandIcon) 
+        - textRenderer.width("OFF") - 20;
+
+String moduleName = module.getName();
 int nameColor = module.isEnabled() ? SkeetTheme.ACCENT_PRIMARY() : SkeetTheme.TEXT_PRIMARY();
-context.drawString(textRenderer, moduleName, nameX, y + 8, nameColor, false);
+
+// Build wrapped lines
+java.util.List<String> lines = new java.util.ArrayList<>();
+StringBuilder currentLine = new StringBuilder();
+
+for (String word : moduleName.split(" ")) {
+    String testLine = currentLine.length() == 0 
+            ? word 
+            : currentLine + " " + word;
+
+    if (textRenderer.width(testLine) <= maxNameWidth) {
+        currentLine.setLength(0);
+        currentLine.append(testLine);
+    } else {
+        if (currentLine.length() > 0) {
+            lines.add(currentLine.toString());
+        }
+        currentLine.setLength(0);
+        currentLine.append(word);
+    }
+}
+
+if (currentLine.length() > 0) {
+    lines.add(currentLine.toString());
+}
+
+// Check if scaling is needed
+boolean needsScale = false;
+for (String line : lines) {
+    if (textRenderer.width(line) > maxNameWidth) {
+        needsScale = true;
+        break;
+    }
+}
+
+// Render with scaling
+float scale = needsScale ? 0.6f : 1.0f;
+
+context.pose().pushPose();
+context.pose().translate(nameX, y + 8, 0);
+context.pose().scale(scale, scale, 1f);
+
+int drawY = 0;
+int lineHeight = textRenderer.lineHeight + 2;
+
+for (String line : lines) {
+    context.drawString(textRenderer, line, 0, drawY, nameColor, false);
+    drawY += lineHeight;
+}
+
+context.pose().popPose();
 
         // Warning icon if risky (RISKY or VERY_RISKY)
         if (module.isRisky()) {
@@ -92,16 +141,7 @@ context.drawString(textRenderer, moduleName, nameX, y + 8, nameColor, false);
         context.drawString(textRenderer, status, statusX, y + 8, statusColor, false);
 
         // Description (smaller text)
-        // Description (smaller text, truncated if too long)
-        int maxDescWidth = width - PADDING * 3;
-        String description = module.getDescription();
-        if (textRenderer.width(description) > maxDescWidth) {
-            while (description.length() > 3 && textRenderer.width(description + "...") > maxDescWidth) {
-                description = description.substring(0, description.length() - 1);
-            }
-            description = description + "...";
-        }
-        context.drawString(textRenderer, description, x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
+        context.drawString(textRenderer, module.getDescription(), x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
 
         // Bottom border
         context.fill(x, y + HEADER_HEIGHT - 1, x + width, y + HEADER_HEIGHT, SkeetTheme.BORDER_DEFAULT());
