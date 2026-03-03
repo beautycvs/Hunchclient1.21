@@ -143,7 +143,6 @@ public class IrcRelayModule extends Module {
 
     private boolean shouldMaintainConnection() {
     boolean result = ircMode || chatWindow != null || DiscordIRCBridge.getInstance().isLinked();
-    System.out.println("[IRC Debug] ircMode=" + ircMode + " chatWindow=" + (chatWindow != null) + " discord=" + DiscordIRCBridge.getInstance().isLinked() + " -> " + result);
     return result;
 }
 
@@ -166,7 +165,6 @@ public class IrcRelayModule extends Module {
      */
     public void toggleIrcMode() {
         ircMode = !ircMode;
-        sendClientMessage("§b[IRC]§r IRC-Mode " + (ircMode ? "§aaktiviert" : "§cdeaktiviert"));
     }
 
     /**
@@ -266,7 +264,6 @@ public class IrcRelayModule extends Module {
 
     private void handlePollResponse(ApiResponse result) {
     if (!result.isSuccess()) {
-        System.out.println("[IRC Debug] Poll failed: HTTP " + result.status + " | " + result.rawBody + " | error=" + result.error);
         return;
     }
 
@@ -279,6 +276,8 @@ public class IrcRelayModule extends Module {
         JsonArray lines = json != null && json.has("lines") && json.get("lines").isJsonArray()
             ? json.getAsJsonArray("lines")
             : null;
+
+        System.out.println("[IRC Debug] Poll OK, lines count: " + (lines == null ? "null" : lines.size()) + " lastTs=" + lastTimestamp);
 
         if (lines == null) {
             return;
@@ -661,7 +660,6 @@ public class IrcRelayModule extends Module {
 
     private void handleDmPollResponse(ApiResponse result) {
     if (!result.isSuccess()) {
-        System.out.println("[IRC Debug] DM Poll failed: HTTP " + result.status + " | " + result.rawBody + " | error=" + result.error);
         return;
     }
 
