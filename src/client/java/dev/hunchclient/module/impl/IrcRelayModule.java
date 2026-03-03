@@ -265,8 +265,9 @@ public class IrcRelayModule extends Module {
 
     private void handlePollResponse(ApiResponse result) {
         if (!result.isSuccess()) {
-            return;
-        }
+        sendClientMessage("§c[IRC] Poll failed: HTTP " + result.status + " | " + result.rawBody);
+        return;
+    }
 
         JsonObject json = result.getJsonObject();
         if (json != null && json.has("now") && json.get("now").isJsonPrimitive()) {
