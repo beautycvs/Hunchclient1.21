@@ -81,6 +81,7 @@ public class NameProtectModule extends Module implements ConfigurableModule, Set
     private boolean showOtherHunchUsers = true;
     private String selfNameReplacement = "&aYou";
 
+    private static NameProtectModule instance;
     private final Object replacementLock = new Object();
     private volatile ReplacementRule[] remoteCache = new ReplacementRule[0];
     private long lastFetch = 0;
@@ -88,7 +89,8 @@ public class NameProtectModule extends Module implements ConfigurableModule, Set
 
     public NameProtectModule() {
         super("NameProtect", "Replaces player names globally", Category.MISC, false);
-
+        instance = this;
+        
         // Build initial cache
         rebuildCombinedCache();
 
@@ -148,14 +150,18 @@ public class NameProtectModule extends Module implements ConfigurableModule, Set
 
     @Override
     protected void onDisable() {
-        // Keep remote replacements in memory for when the module is enabled
-    }
+    // Keep remote replacements in memory for when the module is enabled
+}
 
-    /**
-     * Start a background thread that fetches server data continuously
-     * This runs REGARDLESS of module enabled state, so server data is always available
-     */
-    private void startBackgroundFetcher() {
+public static NameProtectModule getInstance() {
+    return instance;
+}
+
+/**
+ * Start a background thread that fetches server data continuously
+ * This runs REGARDLESS of module enabled state, so server data is always available
+ */
+private void startBackgroundFetcher() {
         Thread fetcherThread = new Thread(() -> {
             // Wait a bit for startup to complete before first fetch
             try {
