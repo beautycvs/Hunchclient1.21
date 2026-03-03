@@ -142,9 +142,10 @@ public class IrcRelayModule extends Module {
     }
 
     private boolean shouldMaintainConnection() {
-        // Maintain connection if: IRC mode enabled, chat window open, OR Discord is linked
-        return ircMode || chatWindow != null || DiscordIRCBridge.getInstance().isLinked();
-    }
+    boolean result = ircMode || chatWindow != null || DiscordIRCBridge.getInstance().isLinked();
+    sendClientMessage("§e[IRC Debug] ircMode=" + ircMode + " chatWindow=" + (chatWindow != null) + " discord=" + DiscordIRCBridge.getInstance().isLinked() + " -> " + result);
+    return result;
+}
 
     private void initDiscordBridge() {
         String nick = resolveIrcNick();
