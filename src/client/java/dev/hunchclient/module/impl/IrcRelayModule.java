@@ -33,7 +33,7 @@ import net.minecraft.sounds.SoundEvents;
  */
 public class IrcRelayModule extends Module {
 
-    private static final Path LAST_TS_FILE = Paths.get("config", "ChatTriggers", "modules", "Hunchclient", "data", "irc_lastts.txt");
+    private static final Path LAST_TS_FILE = Paths.get("config", "hunchclient", "irc_lastts.txt");
     private static final int MAX_PENDING_MESSAGES = 100;
     private static final long PENDING_STALE_MS = 60_000L;
     private static final int POLL_DELAY_TICKS = 10; // Poll chat twice per second
@@ -377,14 +377,18 @@ public class IrcRelayModule extends Module {
     }
 
     private void updateTimestamp(long ts) {
-        if (ts <= 0) {
-            return;
-        }
-        if (ts > lastTimestamp) {
-            lastTimestamp = ts;
-            saveLastTimestamp(ts);
-        }
+    if (ts <= 0) {
+        return;
     }
+    long now = System.currentTimeMillis();
+    if (ts > now + 5000) {
+        return; // reject timestamps more than 5 seconds in the future
+    }
+    if (ts > lastTimestamp) {
+        lastTimestamp = ts;
+        saveLastTimestamp(ts);
+    }
+}
 
     private long loadLastTimestamp() {
         try {
