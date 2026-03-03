@@ -26,6 +26,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import dev.hunchclient.module.impl.NameProtectModule;
 
 /**
  * IRC relay module (ported from ChatTriggers script)
