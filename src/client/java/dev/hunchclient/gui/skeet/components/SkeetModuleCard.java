@@ -107,9 +107,9 @@ for (String line : lines) {
     }
 }
 
-context.pose().pushMatrix();
-context.pose().translate((float) nameX, (float) (y + 8));
-context.pose().scale(scale, scale);
+context.pose().pushPose();
+context.pose().translate((float) nameX, (float) (y + 8), 0);
+context.pose().scale(scale, scale, 1.0f);
 
 int drawY = 0;
 int lineHeight = textRenderer.lineHeight + 2;
@@ -119,7 +119,7 @@ for (String line : lines) {
     drawY += lineHeight;
 }
 
-context.pose().popMatrix();
+context.pose().popPose();
 
         // Warning icon if risky (RISKY or VERY_RISKY)
         if (module.isRisky()) {
