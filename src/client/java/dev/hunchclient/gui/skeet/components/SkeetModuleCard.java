@@ -153,7 +153,6 @@ for (String line : lines) {
             }
             context.drawString(textRenderer, description, x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
         }
-        }
 
         // Bottom border
         context.fill(x, y + HEADER_HEIGHT - 1, x + width, y + HEADER_HEIGHT, SkeetTheme.BORDER_DEFAULT());
