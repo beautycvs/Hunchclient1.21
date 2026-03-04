@@ -143,7 +143,6 @@ for (String line : lines) {
             com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().scale(descScale, descScale, 1.0f);
             context.drawString(textRenderer, description, 0, 0, SkeetTheme.TEXT_DIM(), false);
             com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().popMatrix();
-            com.mojang.blaze3d.systems.RenderSystem.applyModelViewMatrix();
         } else {
             context.drawString(textRenderer, description, descX, descY, SkeetTheme.TEXT_DIM(), false);
         }
