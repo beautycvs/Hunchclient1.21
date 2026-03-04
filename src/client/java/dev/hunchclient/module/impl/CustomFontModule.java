@@ -27,6 +27,7 @@ public class CustomFontModule extends Module implements ConfigurableModule, Sett
     private int selectedFontIndex = 0;
     private boolean replaceMinecraftFont = false;
     private float fontSize = 1.0f; // 1.0 = 100% size
+    private float descriptionScale = 0.5f; // 0.5 = 50% size
 
     public CustomFontModule() {
         super("CustomFont", "Custom fonts for GUI", Category.VISUALS, false);
@@ -100,7 +101,10 @@ public class CustomFontModule extends Module implements ConfigurableModule, Sett
     public float getFontSize() {
         return fontSize;
     }
-
+    public float getDescriptionScale() {
+        return descriptionScale;
+    }
+    
     /**
      * Apply the selected font
      */
@@ -165,7 +169,17 @@ public class CustomFontModule extends Module implements ConfigurableModule, Sett
                     dev.hunchclient.gui.GuiSettings.getInstance().setFontSize(fontSize); // Sync to GuiSettings so the GUI actually uses this size
                 }
             ).withDecimals(0).withSuffix("%"));
-
+                
+            settings.add(new SliderSetting(
+                "Description Scale",
+                "Scale of module description text",
+                "description_scale",
+                10f,
+                100f,
+                () -> descriptionScale * 100f,
+                value -> descriptionScale = value / 100f
+            ).withDecimals(0).withSuffix("%"));
+            
             // Reload Fonts Button
             settings.add(new ButtonSetting(
                 "Reload Fonts",
@@ -209,6 +223,7 @@ public class CustomFontModule extends Module implements ConfigurableModule, Sett
         config.addProperty("selectedFontIndex", selectedFontIndex);
         config.addProperty("replaceMinecraftFont", replaceMinecraftFont);
         config.addProperty("fontSize", fontSize);
+        config.addProperty("descriptionScale", descriptionScale);
         return config;
     }
 
@@ -227,7 +242,9 @@ public class CustomFontModule extends Module implements ConfigurableModule, Sett
             fontSize = data.get("fontSize").getAsFloat();
             dev.hunchclient.gui.GuiSettings.getInstance().setFontSize(fontSize); // Sync saved font size to GuiSettings on startup
         }
-
+        if (data.has("descriptionScale")) {
+            descriptionScale = data.get("descriptionScale").getAsFloat();
+        }
         // Apply font after loading config
         if (isEnabled()) {
             applyFont();
