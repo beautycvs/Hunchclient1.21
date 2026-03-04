@@ -132,27 +132,7 @@ for (String line : lines) {
         context.drawString(textRenderer, status, statusX, y + 8, statusColor, false);
 
 // Description (50% scaled via NanoVG)
-        if (dev.hunchclient.render.NVGRenderer.isDrawing()) {
-            dev.hunchclient.render.NVGRenderer.text(
-                module.getDescription(),
-                x + PADDING + 5,
-                y + 22,
-                textRenderer.lineHeight * 0.5f,
-                SkeetTheme.TEXT_DIM(),
-                dev.hunchclient.render.NVGRenderer.defaultFont
-            );
-        } else {
-            // Fallback if NanoVG not active
-            int maxDescWidth = width - PADDING * 3;
-            String description = module.getDescription();
-            if (textRenderer.width(description) > maxDescWidth) {
-                while (description.length() > 3 && textRenderer.width(description + "...") > maxDescWidth) {
-                    description = description.substring(0, description.length() - 1);
-                }
-                description = description + "...";
-            }
-            context.drawString(textRenderer, description, x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
-        }
+        context.drawString(textRenderer, module.getDescription(), x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
 
         // Bottom border
         context.fill(x, y + HEADER_HEIGHT - 1, x + width, y + HEADER_HEIGHT, SkeetTheme.BORDER_DEFAULT());
