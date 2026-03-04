@@ -47,7 +47,7 @@ public class ViewmodelOverlayModule extends Module implements ConfigurableModule
     private int glowColor = 0xFFFFFFFF; // ARGB: White by default
 
     public ViewmodelOverlayModule() {
-        super("Viewmodel Overlay", "Replace item textures with custom shader overlay (supports PNG, JPG, GIF)", Category.VISUALS, true); // Watchdog safe
+        super("Viewmodel Overlay", "Replace item textures with custom shader overlay", Category.VISUALS, true); // Watchdog safe
         instance = this;
         System.out.println("[ViewmodelOverlayModule] Constructor called!");
     }
