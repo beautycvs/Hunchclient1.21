@@ -137,14 +137,13 @@ for (String line : lines) {
         int descX = x + PADDING + 5;
         int descY = y + 22;
         if (textRenderer.width(description) > maxDescWidth) {
-            // Scale down to 60% and check if it fits
             float descScale = 0.6f;
-            int scaledWidth = (int)(maxDescWidth / descScale);
             com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().pushMatrix();
-            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().translate(descX, descY, 0);
+            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().translate(descX, descY, 0.0f);
             com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().scale(descScale, descScale, 1.0f);
             context.drawString(textRenderer, description, 0, 0, SkeetTheme.TEXT_DIM(), false);
             com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().popMatrix();
+            com.mojang.blaze3d.systems.RenderSystem.applyModelViewMatrix();
         } else {
             context.drawString(textRenderer, description, descX, descY, SkeetTheme.TEXT_DIM(), false);
         }
