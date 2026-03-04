@@ -107,19 +107,16 @@ for (String line : lines) {
     }
 }
 
-context.pose().push();
-context.pose().translate((float) nameX, (float) (y + 8));
-context.pose().scale(scale, scale);
-
 int drawY = 0;
 int lineHeight = textRenderer.lineHeight + 2;
-
 for (String line : lines) {
-    context.drawString(textRenderer, line, 0, drawY, nameColor, false);
+    String drawLine = line;
+    while (drawLine.length() > 3 && textRenderer.width(drawLine) > maxNameWidth) {
+        drawLine = drawLine.substring(0, drawLine.length() - 1);
+    }
+    context.drawString(textRenderer, drawLine, nameX, y + 8 + drawY, nameColor, false);
     drawY += lineHeight;
 }
-
-context.pose().pop();
 
         // Warning icon if risky (RISKY or VERY_RISKY)
         if (module.isRisky()) {
