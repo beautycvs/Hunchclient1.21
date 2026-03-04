@@ -131,20 +131,28 @@ for (String line : lines) {
         int statusX = x + width - textRenderer.width(status) - PADDING;
         context.drawString(textRenderer, status, statusX, y + 8, statusColor, false);
 
-// Description (scaled down if too long)
-        int maxDescWidth = width - PADDING * 3;
-        String description = module.getDescription();
-        int descX = x + PADDING + 5;
-        int descY = y + 22;
-        if (textRenderer.width(description) > maxDescWidth) {
-            float descScale = 0.6f;
-            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().pushMatrix();
-            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().translate(descX, descY, 0.0f);
-            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().scale(descScale, descScale, 1.0f);
-            context.drawString(textRenderer, description, 0, 0, SkeetTheme.TEXT_DIM(), false);
-            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().popMatrix();
+// Description (50% scaled via NanoVG)
+        if (dev.hunchclient.render.NVGRenderer.isDrawing()) {
+            dev.hunchclient.render.NVGRenderer.text(
+                module.getDescription(),
+                x + PADDING + 5,
+                y + 22,
+                textRenderer.lineHeight * 0.5f,
+                SkeetTheme.TEXT_DIM(),
+                dev.hunchclient.render.NVGRenderer.defaultFont
+            );
         } else {
-            context.drawString(textRenderer, description, descX, descY, SkeetTheme.TEXT_DIM(), false);
+            // Fallback if NanoVG not active
+            int maxDescWidth = width - PADDING * 3;
+            String description = module.getDescription();
+            if (textRenderer.width(description) > maxDescWidth) {
+                while (description.length() > 3 && textRenderer.width(description + "...") > maxDescWidth) {
+                    description = description.substring(0, description.length() - 1);
+                }
+                description = description + "...";
+            }
+            context.drawString(textRenderer, description, x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
+        }
         }
 
         // Bottom border
