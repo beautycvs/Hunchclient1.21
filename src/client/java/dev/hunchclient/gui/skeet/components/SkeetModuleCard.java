@@ -131,8 +131,23 @@ for (String line : lines) {
         int statusX = x + width - textRenderer.width(status) - PADDING;
         context.drawString(textRenderer, status, statusX, y + 8, statusColor, false);
 
-        // Description (smaller text)
-        context.drawString(textRenderer, module.getDescription(), x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
+// Description (scaled down if too long)
+        int maxDescWidth = width - PADDING * 3;
+        String description = module.getDescription();
+        int descX = x + PADDING + 5;
+        int descY = y + 22;
+        if (textRenderer.width(description) > maxDescWidth) {
+            // Scale down to 60% and check if it fits
+            float descScale = 0.6f;
+            int scaledWidth = (int)(maxDescWidth / descScale);
+            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().pushMatrix();
+            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().translate(descX, descY, 0);
+            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().scale(descScale, descScale, 1.0f);
+            context.drawString(textRenderer, description, 0, 0, SkeetTheme.TEXT_DIM(), false);
+            com.mojang.blaze3d.systems.RenderSystem.getModelViewStack().popMatrix();
+        } else {
+            context.drawString(textRenderer, description, descX, descY, SkeetTheme.TEXT_DIM(), false);
+        }
 
         // Bottom border
         context.fill(x, y + HEADER_HEIGHT - 1, x + width, y + HEADER_HEIGHT, SkeetTheme.BORDER_DEFAULT());
