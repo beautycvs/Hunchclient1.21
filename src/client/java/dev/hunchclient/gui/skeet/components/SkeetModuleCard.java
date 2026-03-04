@@ -7,7 +7,7 @@ import dev.hunchclient.util.GuiConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-
+import dev.hunchclient.module.impl.CustomFontModule;
 /**
  * Skeet-styled module card component
  * Displays a module with enable/disable state and expansion
@@ -131,8 +131,19 @@ for (String line : lines) {
         int statusX = x + width - textRenderer.width(status) - PADDING;
         context.drawString(textRenderer, status, statusX, y + 8, statusColor, false);
 
-// Description (50% scaled via NanoVG)
-        context.drawString(textRenderer, module.getDescription(), x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
+// Description (scaled text)
+        CustomFontModule customFont = CustomFontModule.getInstance();
+        float descScale = customFont != null && customFont.isEnabled() 
+            ? customFont.getDescriptionScale() : 1.0f;
+        int maxDescWidth = (int)((width - PADDING * 3) / descScale);
+        String description = module.getDescription();
+        if (textRenderer.width(description) > maxDescWidth) {
+            while (description.length() > 3 && textRenderer.width(description + "...") > maxDescWidth) {
+                description = description.substring(0, description.length() - 1);
+            }
+            description = description + "...";
+        }
+        context.drawString(textRenderer, description, x + PADDING + 5, y + 22, SkeetTheme.TEXT_DIM(), false);
 
         // Bottom border
         context.fill(x, y + HEADER_HEIGHT - 1, x + width, y + HEADER_HEIGHT, SkeetTheme.BORDER_DEFAULT());
