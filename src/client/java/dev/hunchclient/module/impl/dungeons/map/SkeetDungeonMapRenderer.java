@@ -485,7 +485,7 @@ public class SkeetDungeonMapRenderer {
             }
 
             if (dev.hunchclient.render.NVGRenderer.isDrawing()) {
-                float smallSize = 6.0f * nameScale;
+                float smallSize = 3.2f * nameScale;
                 float textW = dev.hunchclient.render.NVGRenderer.textWidth(roomName, smallSize, dev.hunchclient.render.NVGRenderer.defaultFont);
                 dev.hunchclient.render.NVGRenderer.text(roomName, centerX - textW / 2, centerY - smallSize / 2, smallSize, 0xFFCCCCCC, dev.hunchclient.render.NVGRenderer.defaultFont);
             } else {
