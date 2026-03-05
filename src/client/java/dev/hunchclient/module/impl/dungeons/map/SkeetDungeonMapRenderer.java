@@ -484,8 +484,14 @@ public class SkeetDungeonMapRenderer {
                 roomName = roomName.substring(0, 6) + "..";
             }
 
-            int textWidth = mc.font.width(roomName);
-            context.drawString(mc.font, roomName, centerX - textWidth / 2, centerY + 6, 0xFFCCCCCC, true);
+            if (dev.hunchclient.render.NVGRenderer.isDrawing()) {
+                float smallSize = 6.0f * nameScale;
+                float textW = dev.hunchclient.render.NVGRenderer.textWidth(roomName, smallSize, dev.hunchclient.render.NVGRenderer.defaultFont);
+                dev.hunchclient.render.NVGRenderer.text(roomName, centerX - textW / 2, centerY - smallSize / 2, smallSize, 0xFFCCCCCC, dev.hunchclient.render.NVGRenderer.defaultFont);
+            } else {
+                int textWidth = mc.font.width(roomName);
+                context.drawString(mc.font, roomName, centerX - textWidth / 2, centerY - mc.font.lineHeight / 2, 0xFFCCCCCC, true);
+            }
         }
     }
 
