@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class SecureApiClient {
 
     private static final Gson GSON = new Gson();
-    private static final String BASE_URL = "https://hunch-irc-backend.onrender.com";
+    private static final String BASE_URL = "https://hunch-irc-backend-v5t8.onrender.com";
 
     private static final int DEFAULT_CONNECT_TIMEOUT = 4000;
     private static final int DEFAULT_READ_TIMEOUT = 6000;
